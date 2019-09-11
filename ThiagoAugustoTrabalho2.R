@@ -28,11 +28,12 @@ dados1$KOTELCHUCK=factor(dados1$KOTELCHUCK,labels=c("Não fez Pré-Natal","Inade
 attach(dados1)
 #EXERCÍCIOS
 #1
-#Gráficos COR/RAÇA
+
 table(ESTCIVMAE,RACACORMAE)
-t=table(ESCMAE2010,ESTCIVMAE)
+table(ESCMAE2010,ESTCIVMAE)
 RACACORMAE=ordered(RACACORMAE,levels=c("Amarela","Indígena","Preta","Branca","Parda"))
 barplot(prop.table(table(RACACORMAE)),main="Proporção de Mães por Raça(ou Cor)",col=50)
+#bebe
 boxplot(PESO~RACACOR2,main="Peso dos Bebês em Relação a Cor(Ou Raça)",ylab="Peso em gramas",col=4)
 summary(IDADEMAE)
 hist(IDADEMAE,breaks=c(17,20,23,26,29,32,35,38,41),col=3,main="Histograma Idade das Mães",ylab="Frequência",xlab="Idade das Mães")
@@ -70,7 +71,6 @@ ks.test(PESO[RACACOR2=="Outros"],mean(PESO[RACACOR2=="Outros"]),sd(PESO[RACACOR2
 LeveneTest(PESO~RACACOR2)
 oneway.test(PESO~RACACOR2,dados1,var.equal=F)
 x=aov(PESO~RACACOR2,dados1)
-summary(dados1)
 PostHocTest(x,method = "bonferroni")
 t=PostHocTest(x,method = "bonferroni")
 plot(t)
