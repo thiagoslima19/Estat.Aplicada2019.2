@@ -13,7 +13,7 @@ dados1$PESO=as.numeric(as.character(dados1$PESO))
 dados1$SEMAGESTAC=as.numeric(as.character(dados1$SEMAGESTAC))
 dados1<-filter(dados1,ESTCIVMAE!=9,ESCMAE2010!=9,KOTELCHUCK!=9,TPAPRESENT!=9)
 dados1<-na.omit(dados1)
-summary(dados)
+
 dados1$ESTCIVMAE=factor(dados1$ESTCIVMAE,labels=c("Solteira","Casada","Viúva","Separada judicialmente","União Consensual"))
 dados1$ESCMAE2010=factor(dados1$ESCMAE2010,labels=c("Sem Escolaridade","Fundamental 1","Fundamental 2","Médio","Superior Incompleto","Superior Completo"))
 dados1$RACACORMAE=factor(dados1$RACACORMAE,labels=c("Branca","Preta","Amarela","Parda","Indígena"))
@@ -32,5 +32,32 @@ attach(dados1)
 table(ESTCIVMAE,RACACORMAE)
 t=table(ESCMAE2010,ESTCIVMAE)
 barplot(prop.table(table(ESCMAE2010)),main="Proporção de Mães por Raça(ou Cor)",col="yellow")
-barplot(prop.table(table(ESCMAE2010)))
+
 write.csv(t,"TESTE.csv")
+#2
+require(DescTools)
+#a)
+
+t.test(SEMAGESTAC~PARTO,alt="two.sided",conf.level=0.95)
+#b)
+chisq.test(GRAVIDEZ,PARTO,correct = T)
+#c)
+dados1$IDADECAT=cut(IDADEMAE,breaks=c(17,20,34,41))
+tabela =table(PARTO=="Cesário",IDADECAT)
+tabela=tabela[2,]
+tabela
+chisq.test(tabela)
+#d)
+
+ks.test(PESO[RACACOR=="Branca"],mean(PESO[RACACOR=="Branca"]),sd(PESO[RACACOR=="Branca"]))
+ks.test()
+dados1$RACACOR2=RACACOR
+RACACOR2=for(i in 1:length(RACACOR)){if(RACACOR=="Amarela"||RACACOR=="Parda"||RACACOR=="Indígena"){RACACOR[i]="Outros"}}
+  
+LeveneTest(PESO~RACACOR)
+oneway.test(PESO~RACACOR,dados1,var.equal=F)
+x=aov(PESO~RACACOR,dados1)
+summary(dados1)
+PostHocTest(x,method = "bonferroni")
+t=PostHocTest(x,method = "bonferroni")
+plot(t)
