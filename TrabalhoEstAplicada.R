@@ -52,8 +52,10 @@ require(DescTools)
 
 t.test(SEMAGESTAC~PARTO,alt="two.sided",conf.level=0.95)
 #b)
-dados2=filter()
-chisq.test(GRAVIDEZ,PARTO,correct = T)
+dados1$GRAVIDEZ2=GRAVIDEZ
+dados1$GRAVIDEZ2=ifelse(GRAVIDEZ=="Única",GRAVIDEZ,"Gemelar")
+dados1$GRAVIDEZ2=factor(dados1$GRAVIDEZ2,levels=c(1,"Gemelar"),labels=c("Única","Gemelar"))
+chisq.test(GRAVIDEZ2,PARTO,correct = T)
 #c)
 dados1$IDADECAT=cut(IDADEMAE,breaks=c(17,20,34,41))
 tabela =table(PARTO=="Cesário",IDADECAT)
@@ -79,3 +81,11 @@ x
 summary(dados1)
 sd(SEMAGESTAC)
 sd(CONSPRENAT)
+
+dados1
+table(GRAVIDEZ2,PARTO)
+mean(PESO[RACACOR2=="Branca"])
+mean(PESO[RACACOR2=="Negra"])
+mean(PESO[RACACOR2=="Outros"])
+mean(SEMAGESTAC[PARTO=="Vaginal"])
+mean(SEMAGESTAC[PARTO=="Cesário"])
