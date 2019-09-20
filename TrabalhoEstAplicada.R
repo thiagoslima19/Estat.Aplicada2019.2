@@ -15,29 +15,29 @@ dados1$SEMAGESTAC=as.numeric(as.character(dados1$SEMAGESTAC))
 dados1<-filter(dados1,CONSPRENAT!=99,ESTCIVMAE!=9,ESCMAE2010!=9,KOTELCHUCK!=9,TPAPRESENT!=9)
 dados1<-na.omit(dados1)
 
-dados1$ESTCIVMAE=factor(dados1$ESTCIVMAE,labels=c("Solteira","Casada","ViÃºva","Separada judicialmente","UniÃ£o Consensual"))
-dados1$ESCMAE2010=factor(dados1$ESCMAE2010,labels=c("Sem Escolaridade","Fundamental 1","Fundamental 2","MÃ©dio","Superior Incompleto","Superior Completo"))
-dados1$RACACORMAE=factor(dados1$RACACORMAE,labels=c("Branca","Preta","Amarela","Parda","IndÃ­gena"))
-dados1$PARIDADE=factor(dados1$PARIDADE,labels=c("1ÂªGestaÃ§Ã£o","NÃ£o Ã© a 1ÂªGestaÃ§Ã£o"))
-dados1$GRAVIDEZ=factor(dados1$GRAVIDEZ,labels=c("Ãšnica","Dupla","Tripla ou mais"))
-dados1$TPAPRESENT=factor(dados1$TPAPRESENT,labels=c("CefÃ¡lica","PÃ©lvica ou PodÃ¡lica","Transversa"))
-dados1$PARTO=factor(dados1$PARTO,labels=c("Vaginal","CesÃ¡rio"))
-dados1$RACACOR=factor(dados1$RACACOR,labels=c("Branca","Negra","Amarela","Parda","IndÃ­gena"))
+dados1$ESTCIVMAE=factor(dados1$ESTCIVMAE,labels=c("Solteira","Casada","Viúva","Separada judicialmente","União Consensual"))
+dados1$ESCMAE2010=factor(dados1$ESCMAE2010,labels=c("Sem Escolaridade","Fundamental 1","Fundamental 2","Médio","Superior Incompleto","Superior Completo"))
+dados1$RACACORMAE=factor(dados1$RACACORMAE,labels=c("Branca","Preta","Amarela","Parda","Indígena"))
+dados1$PARIDADE=factor(dados1$PARIDADE,labels=c("1ªGestação","Não é a 1ªGestação"))
+dados1$GRAVIDEZ=factor(dados1$GRAVIDEZ,labels=c("Única","Dupla","Tripla ou mais"))
+dados1$TPAPRESENT=factor(dados1$TPAPRESENT,labels=c("Cefálica","Pélvica ou Podálica","Transversa"))
+dados1$PARTO=factor(dados1$PARTO,labels=c("Vaginal","Cesário"))
+dados1$RACACOR=factor(dados1$RACACOR,labels=c("Branca","Negra","Amarela","Parda","Indígena"))
 dados1$SEXO=factor(dados1$SEXO,labels=c("Homem","Mulher"))
-dados1$KOTELCHUCK=factor(dados1$KOTELCHUCK,labels=c("NÃ£o fez PrÃ©-Natal","Inadequado","IntermediÃ¡rio","Adequado","Mais que Adequado"))
+dados1$KOTELCHUCK=factor(dados1$KOTELCHUCK,labels=c("Não fez Pré-Natal","Inadequado","Intermediário","Adequado","Mais que Adequado"))
 
 attach(dados1)
-#EXERCÃCIOS
+#EXERCÍCIOS
 #1
 
 x=table(ESTCIVMAE)
 table(ESCMAE2010,ESTCIVMAE)
-RACACORMAE=ordered(RACACORMAE,levels=c("Amarela","IndÃ­gena","Preta","Branca","Parda"))
-barplot(prop.table(table(RACACORMAE)),main="ProporÃ§Ã£o de MÃ£es por RaÃ§a(ou Cor)",col=50)
+RACACORMAE=ordered(RACACORMAE,levels=c("Amarela","Indígena","Preta","Branca","Parda"))
+barplot(prop.table(table(RACACORMAE)),main="Proporção de Mães por Raça(ou Cor)",col=50)
 #bebe
-boxplot(PESO~RACACOR2,main="Peso dos BebÃªs em RelaÃ§Ã£o a Cor(Ou RaÃ§a)",ylab="Peso em gramas",col=4)
+boxplot(PESO~RACACOR2,main="Peso dos Bebês em Relação a Cor(Ou Raça)",ylab="Peso em gramas",col=4)
 summary(IDADEMAE)
-hist(IDADEMAE,breaks=c(17,20,23,26,29,32,35,38,41),col=3,main="Histograma Idade das MÃ£es",ylab="FrequÃªncia",xlab="Idade das MÃ£es")
+hist(IDADEMAE,breaks=c(17,20,23,26,29,32,35,38,41),col=3,main="Histograma Idade das Mães",ylab="Frequência",xlab="Idade das Mães")
 table(GRAVIDEZ)
 summary(SEMAGESTAC)
 summary(CONSPRENAT)
@@ -45,7 +45,7 @@ hist(PESO)
 table(PARTO,TPAPRESENT)
 table(PARTO)
 pie(prop.table(table(PARTO)),main="Tipos de Partos")
-write.csv(t,"TESTE.csv")
+
 #2
 require(DescTools)
 #a)
@@ -53,12 +53,13 @@ require(DescTools)
 t.test(SEMAGESTAC~PARTO,alt="two.sided",conf.level=0.95)
 #b)
 dados1$GRAVIDEZ2=GRAVIDEZ
-dados1$GRAVIDEZ2=ifelse(GRAVIDEZ=="Ãšnica",GRAVIDEZ,"Gemelar")
-dados1$GRAVIDEZ2=factor(dados1$GRAVIDEZ2,levels=c(1,"Gemelar"),labels=c("Ãšnica","Gemelar"))
+dados1$GRAVIDEZ2=ifelse(GRAVIDEZ=="Única",GRAVIDEZ,"Gemelar")
+dados1$GRAVIDEZ2
+dados1$GRAVIDEZ2=factor(dados1$GRAVIDEZ2,levels=c(1,"Gemelar"),labels=c("Única","Gemelar"))
 chisq.test(GRAVIDEZ2,PARTO,correct = T)
 #c)
-dados1$IDADECAT=cut(IDADEMAE,breaks=c(17,20,34,41))
-tabela =table(PARTO=="CesÃ¡rio",IDADECAT)
+dados1$IDADECAT=cut(IDADEMAE,breaks=c(17,20,34,40))
+tabela =table(PARTO=="Cesário",IDADECAT)
 tabela=tabela[2,]
 tabela
 chisq.test(tabela)
@@ -88,4 +89,22 @@ mean(PESO[RACACOR2=="Branca"])
 mean(PESO[RACACOR2=="Negra"])
 mean(PESO[RACACOR2=="Outros"])
 mean(SEMAGESTAC[PARTO=="Vaginal"])
-mean(SEMAGESTAC[PARTO=="CesÃ¡rio"])
+mean(SEMAGESTAC[PARTO=="Cesário"])
+
+hist(IDADEMAE,breaks=c(17,20,25,29,33,37,40),freq=T,plot=T,main="Número de Gestantes por Faixa Etária", xlab="Idades",ylab="Frequência",col="purple")
+
+hist(SEMAGESTAC)
+barplot(prop.table(table(GRAVIDEZ2)),main="Tipos de Gestação",xlab="Tipos",ylab="Frequência",col="Cyan")        
+civ=ESTCIVMAE
+civ=ifelse(ESTCIVMAE=="Solteira"|ESTCIVMAE=="Viúva"|ESTCIVMAE=="Separada judicialmente","Com Companheiro","Sem Companheiro")
+civ=as.character(civ)
+civ=factor(civ,levels=c("Com Companheiro","Sem Companheiro"),labels=c("Com Companheiro","Sem Companheiro"))
+
+barplot(prop.table(table(civ)),main="Estado civil",col="cyan",ylab = "Frequências")
+
+hist(PESO,main="Distribuição do Peso do Bebê",col="orange",ylab="Frequência",xlab="Peso do Bebê")
+
+#Teste Anova
+hist(PESO[RACACOR2=="Branca"],main="Distribuição do Peso do Bebê",col="orange",ylab="Frequência",xlab="Peso do Bebê")
+hist(PESO[RACACOR2=="Negra"],main="Distribuição do Peso do Bebê",col="orange",ylab="Frequência",xlab="Peso do Bebê")
+hist(PESO[RACACOR2=="Outros"],main="Distribuição do Peso do Bebê",col="orange",ylab="Frequência",xlab="Peso do Bebê")
